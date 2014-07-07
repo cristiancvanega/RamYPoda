@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Reinas2;
+package Estructuras;
 
 import Estructuras.Estructura;
 import Estructuras.Nodo;
@@ -12,7 +12,7 @@ import Estructuras.Nodo;
  *
  * @author CRISTIAN
  */
-public class Estruc implements Estructuras.Estruc {
+public class Pila implements Estructuras.Estruc {
 
     @Override
     public Estructura crear() {
@@ -21,14 +21,12 @@ public class Estruc implements Estructuras.Estruc {
 
     @Override
     public void añadir(Estructura h, Nodo nodo, int prioridad) {
-        if (!h.contains(nodo)) {
             h.add(nodo);
-        }
     }
 
     @Override
     public Nodo extraer(Estructura h) {
-        return h.removeFirst();
+        return h.removeLast();
     }
 
     @Override

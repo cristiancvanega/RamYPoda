@@ -30,13 +30,11 @@ public class Nodos implements Estructuras.Nodos{
     public int expandir(Nodo n, Nodo[] hijos) {
         int nHijos = 0;
         Nodo p;
-//        if(n == null)
-//            return 0;
         int i = n.getK() + 1;
         if(i > this.N)
             return nHijos;//Caso especial
         for (int j = 1; j < this.N; j++) {
-            if(this.esKPrometedor(n.getSolucion(), i-1, j)){
+            if(this.esKPrometedor(n.getSolucion(), i, j)){
                 nHijos ++;
                 p = new Nodo(this.N);
                 this.copiar(n, p);
@@ -50,8 +48,8 @@ public class Nodos implements Estructuras.Nodos{
     }
     
     private boolean esKPrometedor(int[] s, int k, int j){
-        for (int i = 1; i <= k; i++) {
-            if((s[i] == j) || valABS(s[i], j) == (k+1-i))
+        for (int i = 0; i <= k; i++) {
+            if((s[i] == j) || valABS(s[i], j) == valABS(i, k))
                 return false;
         }
         return true;
@@ -66,7 +64,7 @@ public class Nodos implements Estructuras.Nodos{
         }
     }
     
-    private void copiar(Nodo n1, Nodo n2){
+    public void copiar(Nodo n1, Nodo n2){
         n2.setSolucion(n1.getSolucion());
         n2.setK(n1.getK());
     }
@@ -98,7 +96,7 @@ public class Nodos implements Estructuras.Nodos{
     public boolean esSolucion(Nodo n) {
 //        if(n == null)
 //            return false;
-        return n.getK() == this.N;
+        return n.getK() == this.N - 1;
     }
 
     @Override

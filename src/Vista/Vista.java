@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Vista;
 
 import Reinas.Esquema;
+import Reinas2.Estructura;
 
 /**
  *
@@ -113,13 +113,19 @@ public class Vista extends javax.swing.JFrame {
 
     private void btnReinasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReinasActionPerformed
         int tamaño = 8;
-        Estructuras.Esquema esquema = new Estructuras.Esquema(tamaño);
-
-        System.out.println(esquema.RyP_una());
-//        int[] s = esquema.RyP_una().getSolucion();
-//        for (int i = 0; i < tamaño; i++) {
-//            System.out.println(" ," + s[i]);
-//        }
+        Estructuras.Esquema esquema = new Estructuras.Esquema(tamaño,
+                this.txtNA, this.txtNG, this.txtNP);
+        Reinas2.Nodos nodos = new Reinas2.Nodos(tamaño);
+        Estructuras.Cola estruc = new Estructuras.Cola();
+        Estructuras.Nodo n = new Estructuras.Nodo(tamaño);
+        Reinas2.Estructura e = new Reinas2.Estructura();
+        int haySolucion = esquema.RyP_una(n, estruc, e, nodos);
+        if (haySolucion == 1) {
+            int []s = n.getSolucion();
+            for (int i = 0; i < tamaño; i++) {
+                this.txtRespuesta.append(" ," + s[i]);
+            }
+        }
     }//GEN-LAST:event_btnReinasActionPerformed
 
     /**

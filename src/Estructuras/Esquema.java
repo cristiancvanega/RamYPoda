@@ -17,6 +17,7 @@ public class Esquema {
     int numAnalizados;
     int numPodados;
     int tamaño;
+    int contador;
     private javax.swing.JTextField txtNA;
     private javax.swing.JTextField txtNG;
     private javax.swing.JTextField txtNP;
@@ -29,6 +30,7 @@ public class Esquema {
         this.numAnalizados = 0;
         this.numPodados = 0;
         this.tamaño = tamaño;
+        this.contador = 0;
         this.txtNA = txtNA;
         this.txtNG = txtNG;
         this.txtNP = txtNP;
@@ -43,12 +45,14 @@ public class Esquema {
         n = nodos.nodoInicial();
         estruc.añadir(e, n, nodos.h(n)); //(*h es la funcion de coste*) 
         while (!estruc.esVacia(e)) {
-            n = estruc.extraer(e);
+            nodos.copiar(estruc.extraer(e), n);
             this.numAnalizados++;
             numHijos = nodos.expandir(n, hijos);
-            this.numGenerados++;
-//            System.out.println("numHijos: " + numHijos);
-            numHijos++;
+            this.numGenerados+=numHijos;
+            System.out.println("numHijos: " + numHijos);
+            System.out.println("Ciclo: " + this.contador);
+//            numHijos++;
+            System.out.println("" + e.size());
 //            nodos.eliminar(n);
             for (int i = 0; i < numHijos; i++) {
                 if (nodos.esAceptable(hijos[i])) {
@@ -59,7 +63,7 @@ public class Esquema {
 //                            }
 //                        }
 //                        estruc.destruir(e);
-                        ((Reinas2.Nodos)nodos).copiar(hijos[i], nodo);
+                        nodos.copiar(hijos[i], nodo);
                         this.imprimir(hijos[i].getSolucion());
                         return 1; //(* devolvemos la solucion *) 
 
@@ -72,6 +76,7 @@ public class Esquema {
 //                    this.numPodados++;
 //                }
             }
+            this.contador ++;
         }
 //        estruc.destruir(e);
         return 0;
@@ -83,7 +88,7 @@ public class Esquema {
         this.txtNP.setText("" + this.numPodados);
         System.out.println("RESPUESTA");
         for (int i = 0; i < tamaño; i++) {
-                System.out.print(" ," + s[i]);
-            }
+            System.out.print(" ," + s[i]);
+        }
     }
 }

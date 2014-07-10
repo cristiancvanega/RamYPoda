@@ -23,5 +23,6 @@ public int valor(Nodo n);
 public void eliminar(Nodo n); 
 public Nodo noHaySolucion(); 
 public void Imprimir(Nodo n); 
+public void copiar(Nodo n1, Nodo n2);
 
 }

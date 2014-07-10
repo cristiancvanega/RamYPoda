@@ -5,15 +5,12 @@
  */
 package Estructuras;
 
-import Estructuras.Estructura;
-import Estructuras.Nodo;
-
 /**
  *
  * @author CRISTIAN
  */
 public class Pila implements Estructuras.Estruc {
-
+    
     @Override
     public Estructura crear() {
         return new Estructura();
@@ -21,11 +18,17 @@ public class Pila implements Estructuras.Estruc {
 
     @Override
     public void añadir(Estructura h, Nodo nodo, int prioridad) {
-            h.add(nodo);
+        System.out.println("añadir");
+        for (int i = 0; i < nodo.getSolucion().length; i++) {
+            System.out.print(", " + nodo.getSolucion()[i]);
+        }
+        System.out.println("");
+            h.addLast(nodo);
     }
 
     @Override
     public Nodo extraer(Estructura h) {
+        System.out.println("rebovido-pila");
         return h.removeLast();
     }
 

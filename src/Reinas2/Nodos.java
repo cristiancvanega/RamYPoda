@@ -3,24 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Reinas2;
 
 import Estructuras.Nodo;
+import java.util.LinkedList;
 
 /**
  *
  * @author CRISTIAN
  */
-public class Nodos implements Estructuras.Nodos{
+public class Nodos implements Estructuras.Nodos {
+
     int N;
+    LinkedList<int[]> validados = new LinkedList<>();
 
     public Nodos(int N) {
         this.N = N;
     }
 
     @Override
-    public Nodo nodoInicial() { 
+    public Nodo nodoInicial() {
         Nodo n = new Nodo(this.N);
 //        n.getSolucion()[0] = -1;
         return n;
@@ -28,34 +30,70 @@ public class Nodos implements Estructuras.Nodos{
 
     @Override
     public int expandir(Nodo n, Nodo[] hijos) {
+        this.imprimeNodoAExpandir(n);
         int nHijos = 0;
+        if (!yaExppandido(n.getSolucion())) {
+            return 0;
+        }
         Nodo p;
         int i = n.getK() + 1;
-        if(i > this.N)
+        if (i > this.N) {
             return nHijos;//Caso especial
+        }
         for (int j = 1; j < this.N; j++) {
-            if(this.esKPrometedor(n.getSolucion(), i, j)){
-                nHijos ++;
+            if (this.esKPrometedor(n.getSolucion(), i, j)) {
+                nHijos++;
                 p = new Nodo(this.N);
                 this.copiar(n, p);
                 p.getSolucion()[i] = j;
                 p.incK();
-                hijos[nHijos-1]=p;
+                hijos[nHijos - 1] = p;
             }
         }
-        this.imprimeHijos(hijos, nHijos);
+//        this.imprimeHijos(hijos, nHijos);
         return nHijos;
     }
-    
-    private boolean esKPrometedor(int[] s, int k, int j){
-        for (int i = 0; i <= k; i++) {
-            if((s[i] == j) || valABS(s[i], j) == valABS(i, k))
+
+    private boolean yaExppandido(int[] s) {
+        boolean respuesta = false;
+        int[] sol = new int[s.length];
+        for (int i = 0; i < s.length; i++) {
+            sol[i] = s[i];
+        }
+        for (int i = 0; i < this.validados.size(); i++) {
+            respuesta = false;
+            for (int j = 0; j < sol.length; j++) {
+                if (sol[j] != this.validados.get(i)[j]) {
+                    respuesta = true;
+                }
+            }
+            if (!respuesta) 
                 return false;
+        }
+        this.validados.add(sol);
+        return true;
+    }
+
+    private void imprimeNodoAExpandir(Nodo n) {
+        int[] s = n.getSolucion();
+        System.out.println("######imprimeNodoAExpandir(n)");
+        for (int i = 0; i < s.length; i++) {
+            System.out.print(", " + s[i]);
+        }
+        System.out.println("");
+        System.out.println("######imprimeNodoAExpandir(n)");
+    }
+
+    private boolean esKPrometedor(int[] s, int k, int j) {
+        for (int i = 0; i <= k; i++) {
+            if ((s[i] == j) || valABS(s[i], j) == valABS(i, k)) {
+                return false;
+            }
         }
         return true;
     }
-    
-    private void imprimeHijos(Nodo[] hijos, int nHijos){
+
+    private void imprimeHijos(Nodo[] hijos, int nHijos) {
         for (int i = 0; i < nHijos; i++) {
             for (int j = 0; j < this.N; j++) {
                 System.out.print(", " + hijos[i].getSolucion()[j]);
@@ -63,30 +101,33 @@ public class Nodos implements Estructuras.Nodos{
             System.out.println("");
         }
     }
-    
-    public void copiar(Nodo n1, Nodo n2){
+
+    @Override
+    public void copiar(Nodo n1, Nodo n2) {
         n2.setSolucion(n1.getSolucion());
         n2.setK(n1.getK());
     }
-    
-    private boolean esKPrometedor(int[] s, int k){
+
+    private boolean esKPrometedor(int[] s, int k) {
         for (int i = 1; i < k; i++) {
-            if(s[i]==s[k] || 
-                    this.valABS(s[i], s[k]) == this.valABS(i, k))
+            if (s[i] == s[k]
+                    || this.valABS(s[i], s[k]) == this.valABS(i, k)) {
                 System.out.println("true");
-                return false;
+            }
+            return false;
         }
         System.out.println("false");
         return true;
     }
 
-    private int valABS(int a, int b){
-        if(a > b)
+    private int valABS(int a, int b) {
+        if (a > b) {
             return a - b;
-        else
+        } else {
             return b - a;
+        }
     }
-    
+
     @Override
     public boolean esAceptable(Nodo n) {
         return n != null;
@@ -128,5 +169,5 @@ public class Nodos implements Estructuras.Nodos{
     public void Imprimir(Nodo n) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

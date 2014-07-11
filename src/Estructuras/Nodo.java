@@ -5,6 +5,9 @@
  */
 package Estructuras;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author CRISTIAN
@@ -46,7 +49,9 @@ public class Nodo {
      * @return the solucion
      */
     public int[] getSolucion() {
-        return solucion;
+//        int [] sol = new int[this.solucion.length];
+//        System.arraycopy(this.solucion, 0, sol, 0, N);
+        return this.solucion;
     }
 
     /**
@@ -77,4 +82,5 @@ public class Nodo {
     public void incK(){
         this.k++;
     }
+    
 }

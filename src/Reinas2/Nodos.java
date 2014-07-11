@@ -15,10 +15,11 @@ import java.util.LinkedList;
 public class Nodos implements Estructuras.Nodos {
 
     int N;
-    LinkedList<int[]> validados = new LinkedList<>();
+    boolean pPasada;
 
     public Nodos(int N) {
         this.N = N;
+        this.pPasada = true;
     }
 
     @Override
@@ -30,47 +31,51 @@ public class Nodos implements Estructuras.Nodos {
 
     @Override
     public int expandir(Nodo n, Nodo[] hijos) {
-        this.imprimeNodoAExpandir(n);
+//        this.imprimeNodoAExpandir(n);
         int nHijos = 0;
-        if (!yaExppandido(n.getSolucion())) {
-            return 0;
-        }
         Nodo p;
         int i = n.getK() + 1;
-        if (i > this.N) {
-            return nHijos;//Caso especial
-        }
-        for (int j = 1; j < this.N; j++) {
-            if (this.esKPrometedor(n.getSolucion(), i, j)) {
-                nHijos++;
-                p = new Nodo(this.N);
-                this.copiar(n, p);
-                p.getSolucion()[i] = j;
-                p.incK();
-                hijos[nHijos - 1] = p;
+//        if (this.pPasada == true) {
+//            for (int j = 1; j < this.N; j++) {
+////                if (this.esKPrometedor(n.getSolucion(), i, j)) {
+//                nHijos++;
+//                p = new Nodo(this.N);
+//                this.copiar(n, p);
+//                p.getSolucion()[i - 1] = j;
+//                p.incK();
+//                hijos[nHijos - 1] = p;
+//                this.imprimeHijos(hijos, nHijos);
+////                }
+//            }
+//            System.out.println("la cagada \nla cagada\nla cagada\nla cagada\nla cagada" + this.pPasada);
+//            this.pPasada = false;
+//        } else {
+            if (i > this.N) {
+                return nHijos;//Caso especial
             }
-        }
+            for (int j = 1; j < this.N; j++) {
+                if (this.esKPrometedor(n.getSolucion(), i, j)) {
+                    nHijos++;
+                    p = new Nodo(this.N);
+                    this.copiar(n, p);
+                    p.getSolucion()[i] = j;
+                    p.incK();
+                    hijos[nHijos - 1] = p;
+                }
+            }
 //        this.imprimeHijos(hijos, nHijos);
+//        }
         return nHijos;
     }
 
-    private boolean yaExppandido(int[] s) {
-        boolean respuesta = false;
-        int[] sol = new int[s.length];
-        for (int i = 0; i < s.length; i++) {
-            sol[i] = s[i];
-        }
-        for (int i = 0; i < this.validados.size(); i++) {
-            respuesta = false;
-            for (int j = 0; j < sol.length; j++) {
-                if (sol[j] != this.validados.get(i)[j]) {
-                    respuesta = true;
-                }
-            }
-            if (!respuesta) 
+    private boolean esKPrometedor(int[] s, int k, int j) {
+//        if(k == 1)
+//            return true;
+        for (int i = 0; i <= k; i++) {
+            if ((s[i] == j) || valABS(s[i], j) == valABS(i, k)) {
                 return false;
+            }
         }
-        this.validados.add(sol);
         return true;
     }
 
@@ -84,21 +89,13 @@ public class Nodos implements Estructuras.Nodos {
         System.out.println("######imprimeNodoAExpandir(n)");
     }
 
-    private boolean esKPrometedor(int[] s, int k, int j) {
-        for (int i = 0; i <= k; i++) {
-            if ((s[i] == j) || valABS(s[i], j) == valABS(i, k)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     private void imprimeHijos(Nodo[] hijos, int nHijos) {
+        System.out.println("\nhijos la cagada");
         for (int i = 0; i < nHijos; i++) {
             for (int j = 0; j < this.N; j++) {
                 System.out.print(", " + hijos[i].getSolucion()[j]);
             }
-            System.out.println("");
+            System.out.println("###############\n");
         }
     }
 

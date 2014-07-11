@@ -48,10 +48,9 @@ public class Esquema {
             nodos.copiar(estruc.extraer(e), n);
             this.numAnalizados++;
             numHijos = nodos.expandir(n, hijos);
-            this.numGenerados+=numHijos;
+            this.numGenerados += numHijos;
             System.out.println("numHijos: " + numHijos);
             System.out.println("Ciclo: " + this.contador);
-//            numHijos++;
             System.out.println("" + e.size());
 //            nodos.eliminar(n);
             for (int i = 0; i < numHijos; i++) {
@@ -76,7 +75,7 @@ public class Esquema {
 //                    this.numPodados++;
 //                }
             }
-            this.contador ++;
+            this.contador++;
         }
 //        estruc.destruir(e);
         return 0;
@@ -90,5 +89,71 @@ public class Esquema {
         for (int i = 0; i < tamaño; i++) {
             System.out.print(" ," + s[i]);
         }
+    }
+
+    public void RyP_todas(Estructuras.Estruc estruc,
+            Estructuras.Estructura e, Estructuras.Nodos nodos,
+            Estructuras.Estructura resp) { //(* encuentra la primera solucion *) 
+        Nodo n; //(* nodo vivo en curso *)   
+        Nodo[] hijos = new Nodo[this.tamaño]; //(* hijos de un nodo *)
+        int numHijos = 0;
+        e = estruc.crear(); //(* inicializamos las estructuras *) 
+        n = nodos.nodoInicial();
+        estruc.añadir(e, n, nodos.h(n)); //(*h es la funcion de coste*) 
+        while (!estruc.esVacia(e)) {
+            nodos.copiar(estruc.extraer(e), n);
+            this.numAnalizados++;
+            numHijos = nodos.expandir(n, hijos);
+            this.numGenerados++;
+//            System.out.println("numHijos: " + numHijos);
+//            System.out.println("Ciclo: " + this.contador);
+//            System.out.println("" + e.size());
+//            nodos.eliminar(n);
+            for (int i = 0; i < numHijos; i++) {
+                if (nodos.esAceptable(hijos[i])) {
+                    if (nodos.esSolucion(hijos[i])) {
+//                        for (int j = 1; j < numHijos; j++) { //(*eliminamos resto de hijos*) 
+//                            if (i != j) {
+//                                nodos.eliminar(hijos[j]);
+//                            }
+//                        }
+//                        estruc.destruir(e);
+                        Nodo nResp = new Nodo(this.tamaño);
+                        nodos.copiar(hijos[i], nResp);
+                        System.out.println("####  SOLUCIÓN");
+                        for (int j = 0; j < nResp.getSolucion().length; j++) {
+                            System.out.print(", " + nResp.getSolucion()[j]);
+                        }
+                        System.out.println("    <--####  SOLUCIÓN");
+                        resp.add(nResp);
+                        this.imprimeResp(resp);
+                    } else {
+                        estruc.añadir(e, hijos[i], nodos.h(hijos[i]));
+                    }
+                }
+//                    else {
+//                    nodos.eliminar(hijos[i]);
+//                    this.numPodados++;
+//                }
+            }
+            this.contador++;
+        }
+//        estruc.destruir(e);
+        this.imprimir();
+    }
+    
+    private void imprimeResp(Estructuras.Estructura resp){
+        for (int i = 0; i < resp.size(); i++) {
+            for (int j = 0; j < resp.get(i).getSolucion().length; j++) {
+                System.out.print(", " + resp.get(i).getSolucion()[j]);
+            }
+            System.out.println("     <- resp  ");
+        }
+    }
+
+    private void imprimir() {
+        this.txtNA.setText("" + this.numGenerados);
+        this.txtNG.setText("" + this.numAnalizados);
+        this.txtNP.setText("" + this.numPodados);
     }
 }
